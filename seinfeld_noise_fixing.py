@@ -53,82 +53,84 @@ def display_image(image: np.ndarray) -> None:
   cv.waitKey(0)
 
 
-def display_median_filter_result(frames: np.ndarray, filter_size=3) -> np.ndarray:
-  # display_images_as_video(frames)
-  
+def median_filter(frames: np.ndarray, filter_size=3) -> np.ndarray:
   fixed_frames = np.zeros_like(frames)
   for idx, frame in enumerate(frames):
     median_frame = cv.medianBlur(frame, filter_size)
     fixed_frames[idx] = median_frame
-    
-    # image = get_side_by_side_image(frame, median_frame, is_horizontal=False)
-    # display_image(image)
 
-  # display_side_by_side_video(frames, fixed_frames, is_horizontal=False)
   return fixed_frames
 
 
-def display_mean_filter_result(frames: np.ndarray, filter_size=3) -> np.ndarray:
-  # display_images_as_video(frames)
-  
+def mean_filter(frames: np.ndarray, filter_size=3) -> np.ndarray:
   fixed_frames = np.zeros_like(frames)
   for idx, frame in enumerate(frames):
     fixed_frame = cv.blur(frame, (filter_size, filter_size), 0)
     fixed_frames[idx] = fixed_frame
     
-    # image = get_side_by_side_image(frame, fixed_frame, is_horizontal=False)
-    # display_image(image)
-  
-  # display_side_by_side_video(frames, fixed_frames, is_horizontal=False)
   return fixed_frames
 
 
-def display_gaussian_filter_result(frames: np.ndarray, filter_size=5) -> np.ndarray:
-  # display_images_as_video(frames)
-  
+def gaussian_filter(frames: np.ndarray, filter_size=5) -> np.ndarray:
   fixed_frames = np.zeros_like(frames)
   for idx, frame in enumerate(frames):
     fixed_frame = cv.GaussianBlur(frame, (filter_size, filter_size), 0)
     fixed_frames[idx] = fixed_frame
-    
-    # image = get_side_by_side_image(frame, fixed_frame, is_horizontal=False)
-    # display_image(image)
   
-  # display_side_by_side_video(frames, fixed_frames, is_horizontal=False)
   return fixed_frames
 
 
-def display_bilateral_filter_result(frames: np.ndarray, filter_size=-1) -> np.ndarray:
-  # display_images_as_video(frames)
-  
+def bilateral_filter(frames: np.ndarray, filter_size=-1) -> np.ndarray:
   fixed_frames = np.zeros_like(frames)
   for idx, frame in enumerate(frames):
     fixed_frame = cv.bilateralFilter(frame, filter_size, 5, 13)
     fixed_frames[idx] = fixed_frame
     
-    # image = get_side_by_side_image(frame, fixed_frame, is_horizontal=False)
-    # display_image(image)
-  
-  # display_side_by_side_video(frames, fixed_frames, is_horizontal=False)
   return fixed_frames
 
 
-def display_prev_next_median_filter_result(frames: np.ndarray) -> np.ndarray:
-  # display_images_as_video(frames)
-  
+def prev_next_median_filter(frames: np.ndarray) -> np.ndarray:
   number_of_prev_and_next_filters = 2
   fixed_frames = np.zeros_like(frames)
 
   for idx in range(number_of_prev_and_next_filters, len(frames)-number_of_prev_and_next_filters-1):
     current_layer = frames[idx - number_of_prev_and_next_filters: idx + number_of_prev_and_next_filters + 1]
-    median = np.median(current_layer, axis=0)
-    fixed_frame = median
+    fixed_frame = np.median(current_layer, axis=0)
     fixed_frames[idx] = fixed_frame
-    
-    # image = get_side_by_side_image(frame, fixed_frame, is_horizontal=False)
-    # display_image(image)
+
+  return fixed_frames
+
+
+def prev_next_median_filter_with_moving_objects_filter(frames: np.ndarray) -> np.ndarray:
+  moving_object_difference_threshold = 10
   
-  # display_side_by_side_video(frames, fixed_frames, is_horizontal=False)
+  number_of_prev_and_next_filters = 2
+  fixed_frames = np.zeros_like(frames)
+
+  for idx in range(number_of_prev_and_next_filters, len(frames)):
+    current_layer = frames[idx - number_of_prev_and_next_filters: idx + 1]
+    fixed_frame = np.median(current_layer, axis=0)
+    
+    if idx > number_of_prev_and_next_filters:
+      frame = frames[idx]
+
+      frames_diff = fixed_frame - fixed_frames[idx-1]
+      abs_diff = np.abs(frames_diff)
+      sum_abs_diff = np.sum(abs_diff, axis=2)
+
+      big_diff_mask = sum_abs_diff > moving_object_difference_threshold
+
+      # filtered_frame = cv.medianBlur(frame, 3)
+      # filtered_frame = cv.bilateralFilter(frame, 3, 5, 5)
+      # fixed_frame[big_diff_mask] = filtered_frame[big_diff_mask]
+      fixed_frame[big_diff_mask] = frame[big_diff_mask]
+
+      # big_diff_mask_as_float = big_diff_mask.astype(float)
+      # cv.imshow('diff', big_diff_mask_as_float*255.)
+      # cv.waitKey(0)
+
+    fixed_frames[idx] = fixed_frame
+
   return fixed_frames
 
 
@@ -139,7 +141,7 @@ def release_resources(video_capture: cv.VideoCapture):
 
 if __name__ == '__main__':
   frames, video_capture = load_video()
-  first_frames = frames[:200]
+  first_frames = frames[:10]
   
   _, H, W, _ = first_frames.shape
   
@@ -149,12 +151,13 @@ if __name__ == '__main__':
   # fixed_frames = display_gaussian_filter_result(fixed_frames)
   # fixed_frames = display_bilateral_filter_result(fixed_frames)
   # fixed_frames = display_median_filter_result(fixed_frames, 3)
-  fixed_frames = display_prev_next_median_filter_result(fixed_frames)
+  # fixed_frames = prev_next_median_filter(fixed_frames)
+  fixed_frames = prev_next_median_filter_with_moving_objects_filter(fixed_frames)
   # display_mean_filter_result(fixed_frames)
   # display_following_frame_filter_results(fixed_frames)
   
-  # display_side_by_side_video(original_frames, fixed_frames, wait_key=True)
-  display_side_by_side_video(original_frames, fixed_frames)
+  display_side_by_side_video(original_frames, fixed_frames, wait_key=True)
+  # display_side_by_side_video(original_frames, fixed_frames)
   
   output_image = get_side_by_side_image(original_frames[2], fixed_frames[2], is_horizontal=False)
   cv.imwrite('Results/image.png', output_image)
