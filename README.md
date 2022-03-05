@@ -160,21 +160,7 @@ We can see that George's forehead is not as noisy as before and not too blurred,
 Now it's time to look at some full video:  
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+https://user-images.githubusercontent.com/83128966/156895615-56566d02-cb40-4082-a2d2-286ce5cc7d24.mp4
 
 
 
