@@ -5,7 +5,7 @@ I saw that Netflix uploaded the entire series and it makes me wanna watch it all
 Although, there is one poor thing that has also changed - there are a lot of noisy pixels in each frame!  
 
 
-I decided to fix the noisy pixels as a self challenge in order to improve my Computer Vision skills. In this paper I tend to solve this problem (remove the redundant noisy pixels) using Computer Vision techniques only, without even using deep learning methods.  
+I decided to fix the noisy pixels as a self challenge in order to improve my Computer Vision skills. In this paper I tend to solve this problem (remove the redundant noisy pixels) using **Computer Vision techniques only**, without even using deep learning methods.  
 Important note: I didn't want to look much at previous works because I wanted to challenge myself, so there are probably some papers on this topic but I didn't search for them on purpose.  
 
 
@@ -155,12 +155,25 @@ In order to get the best result we will filter the video using the median filter
 
 ![median_plus_average](https://user-images.githubusercontent.com/83128966/156892356-5eaa9938-9750-436f-8a83-f238de419b56.png)  
 
-We get great results !  
+We got great results !  
 We can see that George's forehead is not as noisy as before and not too blurred, the frame of the glasses is almost as in the original frame and the face in total is just a bit buggy. 
-Now it's time to look at some full video:  
+Now it's time to look at some full video:
+
+https://user-images.githubusercontent.com/83128966/156898184-980407f8-372b-4f92-91d1-5df993e614ef.mp4
+
+I really love that the background is steady and has its original values.  
+And now for the full resolution video:
+
+https://user-images.githubusercontent.com/83128966/156898253-009492c5-0395-4ac9-addc-5e7ba172f7f2.mp4
 
 
-https://user-images.githubusercontent.com/83128966/156895615-56566d02-cb40-4082-a2d2-286ce5cc7d24.mp4
+## Conclusions
 
+Well, I'm pretty satisfied by the result !  
+I know that the final result isn't perfect and requires more work but for the sake of the challenge it is quite good.  
 
+We saw 2 different approaches, one used popular and easy-to-use filters (median, average, bilateral filter) and the other one was more sophisticated, which used the utility of other frames that can help processing another frame. All the solutions have their own trade-offs, some are easy-to-use and fast, others are more accurate but sophisticated and slow.  
 
+Feel free to contribute to the project.
+You are more then welcome to contact me on LinkedIn (https://www.linkedin.com/in/yuval-maymon-007a36173/) and ask questions.
+Thanks for reading and don't forget to give this project a star if you liked it !
