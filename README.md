@@ -122,10 +122,54 @@ There are some possible options:
 
 I will start with the first option.  
 Now I'm working on the half-fixed frames, frames which are already processed by the median filter on consecutive frames.  
-I wanted to find the pixels that have changed from the processed frame to the original frame. In order to do that I measured the absolute difference between the processed frame to the original frame (for each pixel). Then I chose the best threshold which keeps the static pixels unchained and points out the dynamic ones.  
+I wanted to find the pixels that have changed from the processed frame to the original frame. In order to do that I measured the absolute difference between the processed frame to the original frame (for each pixel). Then I chose the best threshold which almostly keeps the static pixels unchained and points out the dynamic ones.  
 Take a look at the masked frame:
 
 ![median_mask](https://user-images.githubusercontent.com/83128966/156889279-9e5a3d0c-93ae-4c77-8808-9344f9d17de9.png)
+
+Now, we can use the masked pixels and take the same pixels from the original frame. I'm taking the original pixels that might be noisy because I think that there aren't much pixels that one can notice the difference.  
+The resulting frame:  
+
+![prev_next_median](https://user-images.githubusercontent.com/83128966/156891249-dc99ea3c-f6a8-4de5-a8c0-83a907e1abb8.png)
+
+We get nice frame but it's a little buggy, look at the frame (no pan intended :) ) of George's glasses which got thiner. George's forehead is still too blurry.  
+In order to fix this I wanted to take more of the dynamic pixels. One way of doing so is to increase the threshold, but it causing the background to be more nosisy. Another wat is to take the pixels that surround the masked pixels that we found above.  
+
+I chose to find a better way of defining dynamic dynamic pixels.  
+In order to define it better I had to explore the influence of the median and average filters in the dynamic objects.  
+Take a look at the following figure:  
+
+![Seinfeld Ilustration](https://user-images.githubusercontent.com/83128966/156891620-0cda7516-80e3-4c15-9fc5-c797cb3d2a53.png)
+
+On the upper part we can see the situation where we work on the “current frame” (top center), with its previous frame (top left) and next frame (top right). The blue line demonstrates the pixels that have been moved from frame to frame (it moves downwards while the frames go by).  
+On the bottom of the figure we can see the fixed frame after it has been processed with each filter (left - median, right - average).  
+I noticed that the median filter disables all the moving pixels, while the average filter keeps all the pixels from all frames.  
+Recap that we compare the fixed frame to the original frame, therefore the moving pixels masks will be almost like the bottom part of the figure. It means that the average filter will detect dynamic pixels better than the median filter.
+
+The next step is to compare the masks of both filters. On the top of the next frame we can see the average filter mask and on the bottom the median filter mask.  
+We can see that the average filter is much better because it detects much less static pixels and much more dynamic pixels. Moreover, the dynamic pixels are thick and grabbed together, showing the movements really good.  
+
+![average_vs_median_mask](https://user-images.githubusercontent.com/83128966/156892285-481a8d77-28b6-43f2-9bfa-c7b8a85a6831.png)
+
+In order to get the best result we will filter the video using the median filter on consecutive frames and take the dynamic pixels of the original frame using the avergae filter mask. The result we got is:  
+
+![median_plus_average](https://user-images.githubusercontent.com/83128966/156892356-5eaa9938-9750-436f-8a83-f238de419b56.png)  
+
+We get great results !  
+We can see that George's forehead is not as noisy as before and not too blurred, the frame of the glasses is almost as in the original frame and the face in total is just a bit buggy. 
+Now it's time to look at some full video:  
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
