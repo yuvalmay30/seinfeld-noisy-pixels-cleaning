@@ -175,5 +175,5 @@ I know that the final result isn't perfect and requires more work but for the sa
 We saw 2 different approaches, one used popular and easy-to-use filters (median, average, bilateral filter) and the other one was more sophisticated, which used the utility of other frames that can help processing another frame. All the solutions have their own trade-offs, some are easy-to-use and fast, others are more accurate but sophisticated and slow.  
 
 Feel free to contribute to the project.
-You are more then welcome to contact me on LinkedIn (https://www.linkedin.com/in/yuval-maymon-007a36173/) and ask questions.
+You are more than welcome to contact me on LinkedIn (https://www.linkedin.com/in/yuval-maymon-007a36173/) and ask questions.
 Thanks for reading and don't forget to give this project a star if you liked it !
