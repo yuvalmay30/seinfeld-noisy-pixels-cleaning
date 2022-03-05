@@ -105,9 +105,27 @@ Another drawback is that we can't fix the first and last _x_ frames because we h
 A possible solution is to take as a reference only the next _x_ frames while working on the first _x_ frames, and do the opposite for the last _x_ frames.  
 Note that the cleaned pixels have their original value! This is a change considering the best result we got so far od using Bilatearl filtering (which changes the original pixels values).
 
+I wanted to try using average filtering with a small kernel on consecutive frames because I thought that it might blur the moving objects just fine, while keeping the smoothness of the static objects.  
+In the next figure we can see the average filtering result on top and median filtering on the bottom:
+
+![prev_next_top_average_bottom_median](https://user-images.githubusercontent.com/83128966/156888368-6b940d8e-ea8b-402d-8e12-5794c7833a28.png)
+
+We can see the duplication of the dynamic objects in the average filtered image (you can see the duplicate reflection of the light on George’s glasses), which is happening because of too low FPS rate. On the other hand, on the median filtered image, some of the original pixels have “disappeared” (look at the same reflection of the light).
+
 So how can we improve the given result?  
 I thought that we got pretty good results for static objects (like backgrounds) and I would like to keep it like this.  
-So now I only need to determine the moving objects and fix them.
+So now I need to determine the moving objects and fix them.
+There are some possible options:
+1. Thresholding the difference between the median filtered frame and the original frame
+2. Thresholding the difference between the average filtered frame and the original frame
+3. Use SIFT algorithm in order to match features between dynamic ojects in each frame
+
+I will start with the first option.  
+Now I'm working on the half-fixed frames, frames which are already processed by the median filter on consecutive frames.  
+I wanted to find the pixels that have changed from the processed frame to the original frame. In order to do that I measured the absolute difference between the processed frame to the original frame (for each pixel). Then I chose the best threshold which keeps the static pixels unchained and points out the dynamic ones.  
+Take a look at the masked frame:
+
+![median_mask](https://user-images.githubusercontent.com/83128966/156889279-9e5a3d0c-93ae-4c77-8808-9344f9d17de9.png)
 
 
 
