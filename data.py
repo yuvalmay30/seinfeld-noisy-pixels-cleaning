@@ -11,7 +11,7 @@ def load_video() -> Tuple[np.ndarray, cv.VideoCapture]:
     is_succeed, frame = video_capture.read()
     
     if not is_succeed:
-      print("Can't receive frame - probably loaded all frames")
+      print("Can't load frame - probably loaded all frames")
       break
     
     frames.append(frame)

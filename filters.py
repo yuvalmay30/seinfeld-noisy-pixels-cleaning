@@ -39,7 +39,7 @@ def bilateral_filter(frames: np.ndarray, filter_size=-1) -> np.ndarray:
   return fixed_frames
 
 
-def prev_next_average_filter(frames: np.ndarray) -> np.ndarray:
+def average_filter_on_consecutive_frames(frames: np.ndarray) -> np.ndarray:
   number_of_prev_and_next_filters = 1
   fixed_frames = np.zeros_like(frames)
   
@@ -51,7 +51,7 @@ def prev_next_average_filter(frames: np.ndarray) -> np.ndarray:
   return fixed_frames
 
 
-def prev_next_median_filter(frames: np.ndarray) -> np.ndarray:
+def median_filter_on_consecutive_frames(frames: np.ndarray) -> np.ndarray:
   number_of_prev_and_next_filters = 1
   fixed_frames = np.zeros_like(frames)
   
@@ -63,7 +63,7 @@ def prev_next_median_filter(frames: np.ndarray) -> np.ndarray:
   return fixed_frames
 
 
-def prev_next_gaussian_filter(frames: np.ndarray) -> np.ndarray:
+def gaussian_filter_on_consecutive_frames(frames: np.ndarray) -> np.ndarray:
   number_of_prev_and_next_filters = 1
   fixed_frames = np.zeros_like(frames)
   
@@ -78,8 +78,8 @@ def prev_next_gaussian_filter(frames: np.ndarray) -> np.ndarray:
   return fixed_frames
 
 
-def prev_next_median_filter_with_moving_objects_filter(frames: np.ndarray) -> np.ndarray:
-  moving_object_difference_threshold = 40
+def median_filter_on_consecutive_frames_with_median_mask(frames: np.ndarray) -> np.ndarray:
+  moving_object_difference_threshold = 10
   
   number_of_median_prev_and_next_filters = 2
   fixed_frames = np.zeros_like(frames)
@@ -88,8 +88,7 @@ def prev_next_median_filter_with_moving_objects_filter(frames: np.ndarray) -> np
     current_median_layer = frames[idx - number_of_median_prev_and_next_filters:
                                   idx + number_of_median_prev_and_next_filters + 1]
     
-    median_frame = np.median(current_median_layer, axis=0)
-    fixed_frame = median_frame
+    fixed_frame = np.median(current_median_layer, axis=0)
     
     if idx > number_of_median_prev_and_next_filters:
       frame = frames[idx]
@@ -106,7 +105,7 @@ def prev_next_median_filter_with_moving_objects_filter(frames: np.ndarray) -> np
   return fixed_frames
 
 
-def prev_next_filter_with_moving_objects_filter(frames: np.ndarray) -> np.ndarray:
+def median_filter_on_consecutive_frames_with_average_mask(frames: np.ndarray) -> np.ndarray:
   moving_object_difference_threshold = 10
   
   number_of_median_prev_and_next_filters = 2
