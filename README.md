@@ -157,7 +157,25 @@ In order to get the best result we will filter the video using the median filter
 
 We got great results !  
 We can see that George's forehead is not as noisy as before and not too blurred, the frame of the glasses is almost as in the original frame and the face in total is just a bit buggy. 
-Now it's time to look at some full video:
+
+
+## Results
+The best methods we got so far are the "Bilateral filtering" and the "Consecutive median filter with average mask".
+
+Now it's time to look at some full videos.  
+First, I will show the result of Bilateral filtering. Interesting note - I tried the "multiple Bilateral filtering" that I showed before and the result wasn't so good. That is because the filter performs not so great on video (though it looks fine per frame).  
+So instead, I'm showing the regular Bilateral filter which make the frames look cartoonish:
+
+
+https://user-images.githubusercontent.com/83128966/157315613-abb8929c-931d-4725-bce1-fbc8801f0555.mp4
+
+
+
+https://user-images.githubusercontent.com/83128966/157313863-f64529ad-6ce8-4a8d-8172-af338b571a76.mp4
+
+
+
+The second filter in the "Consecutive median filter with average mask":
 
 https://user-images.githubusercontent.com/83128966/156898184-980407f8-372b-4f92-91d1-5df993e614ef.mp4
 
@@ -173,6 +191,8 @@ Well, I'm pretty satisfied by the result !
 I know that the final result isn't perfect and requires more work but for the sake of the challenge it is quite good.  
 
 We saw 2 different approaches, one used popular and easy-to-use filters (median, average, bilateral filter) and the other one was more sophisticated, which used the utility of other frames that can help processing another frame. All the solutions have their own trade-offs, some are easy-to-use and fast, others are more accurate but sophisticated and slow.  
+
+There is much future work left to do in order to make it perfect :)
 
 Feel free to contribute to the project.
 You are more than welcome to contact me on LinkedIn (https://www.linkedin.com/in/yuval-maymon-007a36173/) and ask questions.
